@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notas en Tiempo Real</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="container mt-5">
+
+    <h2 class="text-center mb-4">Notas en Tiempo Real</h2>
+
+    <div class="row">
+        <!-- Competidor Rojo -->
+        <div class="col-md-6">
+            <h3 class="text-danger">Competidor Rojo</h3>
+            <p><strong>J1 Acc:</strong> <span id="red-acc-1">-</span>  <strong>Pre:</strong> <span id="red-pre-1">-</span></p>
+            <p><strong>J2 Acc:</strong> <span id="red-acc-2">-</span>  <strong>Pre:</strong> <span id="red-pre-2">-</span></p>
+            <p><strong>J3 Acc:</strong> <span id="red-acc-3">-</span>  <strong>Pre:</strong> <span id="red-pre-3">-</span></p>
+            <p><strong>J4 Acc:</strong> <span id="red-acc-4">-</span>  <strong>Pre:</strong> <span id="red-pre-4">-</span></p>
+            <p><strong>J5 Acc:</strong> <span id="red-acc-5">-</span>  <strong>Pre:</strong> <span id="red-pre-5">-</span></p>
+            <p><strong>J6 Acc:</strong> <span id="red-acc-6">-</span>  <strong>Pre:</strong> <span id="red-pre-6">-</span></p>
+            <p><strong>J7 Acc:</strong> <span id="red-acc-7">-</span>  <strong>Pre:</strong> <span id="red-pre-7">-</span></p>
+        </div>
+
+        <!-- Competidor Azul -->
+        <div class="col-md-6">
+            <h3 class="text-primary">Competidor Azul</h3>
+            <p><strong>J1 Acc:</strong> <span id="blue-acc-1">-</span> <strong>Pre:</strong> <span id="blue-pre-1">-</span></p>
+            <p><strong>J2 Acc:</strong> <span id="blue-acc-2">-</span> <strong>Pre:</strong> <span id="blue-pre-2">-</span></p>
+            <p><strong>J3 Acc:</strong> <span id="blue-acc-3">-</span> <strong>Pre:</strong> <span id="blue-pre-3">-</span></p>
+            <p><strong>J4 Acc:</strong> <span id="blue-acc-4">-</span> <strong>Pre:</strong> <span id="blue-pre-4">-</span></p>
+            <p><strong>J5 Acc:</strong> <span id="blue-acc-5">-</span> <strong>Pre:</strong> <span id="blue-pre-5">-</span></p>
+            <p><strong>J6 Acc:</strong> <span id="blue-acc-6">-</span> <strong>Pre:</strong> <span id="blue-pre-6">-</span></p>
+            <p><strong>J7 Acc:</strong> <span id="blue-acc-7">-</span> <strong>Pre:</strong> <span id="blue-pre-7">-</span></p>
+        </div>
+    </div>
+
+    <h2>Notas Recibidas</h2>
+    <ul id="listaNotas"></ul>
+
+    <script>
+        // Conectar al WebSocket
+        const socket = new WebSocket("ws://127.0.0.1:8000/ws/evaluaciones/");
+
+        socket.onopen = function(event) {
+            console.log("Conexión WebSocket abierta");
+        };
+
+        socket.onmessage = function(event) {
+            console.log("Mensaje recibido:", event.data);
+
+            try {
+                const data = JSON.parse(event.data);
+                console.log("Datos parseados:", data);
+
+                const lista = document.getElementById("listaNotas");
+                const item = document.createElement("li");
+                item.textContent = `Juez: ${data.juez} - Competidor Rojo: Acc: ${data.red.acc}, Pre: ${data.red.pre} - Competidor Azul: Acc: ${data.blue.acc}, Pre: ${data.blue.pre}`;
+                lista.appendChild(item);
+
+                if (data.red && data.blue) {
+                    const juezIndex = data.juez.replace('juez', '');
+                    document.getElementById(`red-acc-${juezIndex}`).textContent = data.red.acc;
+                    document.getElementById(`red-pre-${juezIndex}`).textContent = data.red.pre;
+                    document.getElementById(`blue-acc-${juezIndex}`).textContent = data.blue.acc;
+                    document.getElementById(`blue-pre-${juezIndex}`).textContent = data.blue.pre;
+                } else {
+                    console.error("Datos en formato incorrecto:", data);
+                }
+            } catch (error) {
+                console.error("Error al procesar el mensaje:", error);
+            }
+        };
+
+        socket.onerror = function(event) {
+            console.error("Error en la conexión WebSocket:", event);
+        };
+
+        socket.onclose = function(event) {
+            console.log("Conexión WebSocket cerrada", event);
+        };
+    </script>
+
+</body>
+</html>

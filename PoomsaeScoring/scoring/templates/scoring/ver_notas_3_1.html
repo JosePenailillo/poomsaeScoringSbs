@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Notas en Tiempo Real</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            font-size: 4rem;
+        }
+        .bg-blue {
+            background-color:rgb(25, 42, 90);
+        }
+        .bg-red {
+            background-color:rgb(80, 22, 22);
+        }
+        .bg-yellow {
+            background-color: #facc15;
+        }
+        .bg-gray {
+            background-color: #4b5563;
+        }
+        .bg-gray2 {
+            background-color:rgb(41, 46, 51);
+        }
+        .bg-dark-red {
+            background-color: #b91c1c;
+        }
+        .bg-dark-blue {
+            background-color:rgb(28, 51, 185);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container py-3">
+        <div class="d-flex justify-content-between mb-2">
+            <div class="fs-8">101</div>
+            <div class="fs-8">Male Under 30</div>
+            <div class="fs-8">Semi Final</div>
+        </div>
+        <div class="row">
+            <!-- Left Column -->
+            <div class="col-3 bg-red p-2">
+                <div class="d-flex justify-content-between mb-1">
+                    <div class="col rounded-3 me-1 text-center bg-dark-red">1</div>
+                    <span id="red-acc-1" class="col rounded-3 me-1 text-center bg-gray2">4.0</span>
+                    <span id="red-pre-1" class="col rounded-3 me-1 text-center bg-gray">6.0</span>
+                </div>
+                <div class="d-flex justify-content-between mb-1">
+                    <div class="col rounded-3 me-1 text-center bg-dark-red">2</div>
+                    <span id="red-acc-2" class="col rounded-3 me-1 text-center bg-gray2">4.0</span>
+                    <span id="red-pre-2" class="col rounded-3 me-1 text-center bg-gray">6.0</span>
+                </div>
+                <div class="d-flex justify-content-between mb-1">
+                    <div class="col rounded-3 me-1 text-center bg-dark-red">3</div>
+                    <span id="red-acc-3" class="col rounded-3 me-1 text-center bg-gray2">4.0</span>
+                    <span id="red-pre-3" class="col rounded-3 me-1 text-center bg-gray">6.0</span>
+                </div>
+                <div class="d-flex justify-content-between mb-1 opacity-25">
+                    <div class="col rounded-3 me-1 text-center bg-dark-red">4</div>
+                    <span class="col rounded-3 me-1 text-center bg-gray2"></span>
+                    <span class="col rounded-3 me-1 text-center bg-gray"></span>
+                </div>
+                <div class="d-flex justify-content-between mb-1 opacity-25">
+                    <div class="col rounded-3 me-1 text-center bg-dark-red">5</div>
+                    <span class="col rounded-3 me-1 text-center bg-gray2"></span>
+                    <span class="col rounded-3 me-1 text-center bg-gray"></span>
+                </div>
+                <div class="d-flex justify-content-between mb-1 opacity-25">
+                    <div class="col rounded-3 me-1 text-center bg-dark-red">6</div>
+                    <span class="col rounded-3 me-1 text-center bg-gray2"></span>
+                    <span class="col rounded-3 me-1 text-center bg-gray"></span>
+                </div>
+                <div class="d-flex justify-content-between mb-1 opacity-25">
+                    <div class="col rounded-3 me-1 text-center bg-dark-red">7</div>
+                    <span class="col rounded-3 me-1 text-center bg-gray2"></span>
+                    <span class="col rounded-3 me-1 text-center bg-gray"></span>
+                </div>
+            </div>
+            <!-- Center Column -->
+            <div class="col-3 d-flex flex-column justify-content-center align-items-center bg-red">
+                <span id="total-red-acc" class="fs-7 text-warning">4.0</span>
+                <span id="total-red-pre" class="fs-7 text-warning">6.0</span>
+                <span id="total-red" class="fs-8 mt-2 text-warning fw-bold border border-warning p-3">10.0</span>
+                <span class="fs-2 text-warning">Total Score</span>
+            </div>
+            <div class="col-3 d-flex flex-column justify-content-center align-items-center bg-blue">
+                <span id="total-blue-acc" class="fs-7 text-warning">4.0</span>
+                <span id="total-blue-pre" class="fs-7 text-warning">6.0</span>
+                <span id="total-blue" class="fs-8 mt-2 text-warning fw-bold border border-warning p-3">10.0</span>
+                <span class="fs-2 text-warning">Total Score</span>
+            </div>
+            <!-- Right Column -->
+            <div class="col-3 bg-blue p-2">
+                <div class="d-flex justify-content-between mb-1">
+                    <span id="blue-acc-1" class="col rounded-3 me-1 text-center bg-gray2">4.0</span>
+                    <span id="blue-pre-1" class="col rounded-3 me-1 text-center bg-gray">6.0</span>
+                    <div class="col rounded-3 me-1 text-center bg-dark-blue">1</div>
+                </div>
+                <div class="d-flex justify-content-between mb-1">
+                    <span id="blue-acc-2" class="col rounded-3 me-1 text-center bg-gray2">4.0</span>
+                    <span id="blue-pre-2" class="col rounded-3 me-1 text-center bg-gray">6.0</span>
+                    <div class="col rounded-3 me-1 text-center bg-dark-blue">2</div>
+                </div>
+                <div class="d-flex justify-content-between mb-1">
+                    <span id="blue-acc-3" class="col rounded-3 me-1 text-center bg-gray2">4.0</span>
+                    <span id="blue-pre-3" class="col rounded-3 me-1 text-center bg-gray">6.0</span>
+                    <div class="col rounded-3 me-1 text-center bg-dark-blue">3</div>
+                </div>
+                <div class="d-flex justify-content-between mb-1 opacity-25">
+                    <span class="col rounded-3 me-1 text-center bg-gray2"></span>
+                    <span class="col rounded-3 me-1 text-center bg-gray"></span>
+                    <div class="col rounded-3 me-1 text-center bg-dark-blue">4</div>
+                </div>
+                <div class="d-flex justify-content-between mb-1 opacity-25">
+                    <span class="col rounded-3 me-1 text-center bg-gray2"></span>
+                    <span class="col rounded-3 me-1 text-center bg-gray"></span>
+                    <div class="col rounded-3 me-1 text-center bg-dark-blue">5</div>
+                </div>
+                <div class="d-flex justify-content-between mb-1 opacity-25">
+                    <span class="col rounded-3 me-1 text-center bg-gray2"></span>
+                    <span class="col rounded-3 me-1 text-center bg-gray"></span>
+                    <div class="col rounded-3 me-1 text-center bg-dark-blue">6</div>
+                </div>
+                <div class="d-flex justify-content-between mb-1 opacity-25">
+                    <span class="col rounded-3 me-1 text-center bg-gray2"></span>
+                    <span class="col rounded-3 me-1 text-center bg-gray"></span>
+                    <div class="col rounded-3 me-1 text-center bg-dark-blue">7</div>
+                </div>
+            </div>
+        </div>
+        <div class="d-flex justify-content-between mt-2">
+            <div class="fs-8">1 KEUMGANG</div>
+            <div class="fs-8">🕒 55</div>
+        </div>
+    </div>
+
+    <script>
+        // Conectar al WebSocket
+        let totalRedAcc = 0;
+        let totalRedPre = 0;
+        let totalBlueAcc = 0;
+        let totalBluePre = 0;
+        let totalRed = 0;
+        let totalBlue = 0;
+    
+        const socket = new WebSocket("ws://127.0.0.1:8000/ws/evaluaciones/");
+
+        socket.onopen = function(event) {
+            console.log("Conexión WebSocket abierta");
+        };
+
+        socket.onmessage = function(event) {
+            console.log("Mensaje recibido:", event.data);
+
+            try {
+                const data = JSON.parse(event.data);
+                console.log("Datos parseados:", data);
+
+                if (data.red && data.blue) {
+                    const juezIndex = data.juez.replace('juez', '');
+                    document.getElementById(`red-acc-${juezIndex}`).textContent = data.red.acc;
+                    document.getElementById(`red-pre-${juezIndex}`).textContent = data.red.pre;
+                    document.getElementById(`blue-acc-${juezIndex}`).textContent = data.blue.acc;
+                    document.getElementById(`blue-pre-${juezIndex}`).textContent = data.blue.pre;
+
+                    document.getElementById(`red-acc-${juezIndex}`).classList.replace('bg-gray2', 'bg-yellow')
+                    document.getElementById(`red-pre-${juezIndex}`).classList.replace('bg-gray', 'bg-yellow')
+                    document.getElementById(`blue-acc-${juezIndex}`).classList.replace('bg-gray2', 'bg-yellow')
+                    document.getElementById(`blue-pre-${juezIndex}`).classList.replace('bg-gray', 'bg-yellow')
+
+                    // Sumar la nota de red.acc al total
+                    totalRedAcc += parseFloat(data.red.acc) / 3;
+                    totalRedPre += parseFloat(data.red.pre) / 3;
+                    totalRed = totalRedAcc + totalRedPre;
+                    document.getElementById(`total-red-acc`).textContent = (Math.round(totalRedAcc * 1000) / 1000).toFixed(3);
+                    document.getElementById(`total-red-pre`).textContent = (Math.round(totalRedPre * 1000) / 1000).toFixed(3);
+                    document.getElementById(`total-red`).textContent = totalRed.toFixed(3);
+                    // Sumar la nota de red.acc al total
+                    totalBlueAcc += parseFloat(data.blue.acc) / 3;
+                    totalBluePre += parseFloat(data.blue.pre) / 3;
+                    totalBlue = totalBlueAcc + totalBluePre;
+                    document.getElementById(`total-blue-acc`).textContent = (Math.round(totalBlueAcc * 1000) / 1000).toFixed(3);
+                    document.getElementById(`total-blue-pre`).textContent = (Math.round(totalBluePre * 1000) / 1000).toFixed(3);
+                    document.getElementById(`total-blue`).textContent = totalBlue.toFixed(3);
+                } else {
+                    console.error("Datos en formato incorrecto:", data);
+                }
+            } catch (error) {
+                console.error("Error al procesar el mensaje:", error);
+            }
+        };
+
+        socket.onerror = function(event) {
+            console.error("Error en la conexión WebSocket:", event);
+        };
+
+        socket.onclose = function(event) {
+            console.log("Conexión WebSocket cerrada", event);
+        };
+    </script>
+
+</body>
+</html>
