@@ -39,9 +39,9 @@
 
     <div class="container py-3">
         <div class="d-flex justify-content-between mb-2">
-            <div class="fs-8">101</div>
-            <div class="fs-8">Male Under 30</div>
-            <div class="fs-8">Semi Final</div>
+            {% comment %} <div class="fs-8">101</div> {% endcomment %}
+            {% comment %} <div class="fs-8">Male Under 30</div> {% endcomment %}
+            {% comment %} <div class="fs-8">Semi Final</div> {% endcomment %}
         </div>
         <div class="row">
             <!-- Left Column -->
@@ -88,12 +88,14 @@
                 <span id="total-red-pre" class="fs-7 text-warning">6.0</span>
                 <span id="total-red" class="fs-8 mt-2 text-warning fw-bold border border-warning p-3">10.0</span>
                 <span class="fs-2 text-warning">Total Score</span>
+                <span id="winner-red" class="fs-8 fw-bold p-3 justify-content-end"></span>
             </div>
             <div class="col-3 d-flex flex-column justify-content-center align-items-center bg-blue">
                 <span id="total-blue-acc" class="fs-7 text-warning">4.0</span>
                 <span id="total-blue-pre" class="fs-7 text-warning">6.0</span>
                 <span id="total-blue" class="fs-8 mt-2 text-warning fw-bold border border-warning p-3">10.0</span>
                 <span class="fs-2 text-warning">Total Score</span>
+                <span id="winner-blue" class="fs-8 fw-bold p-3 aling-items-start"></span>
             </div>
             <!-- Right Column -->
             <div class="col-3 bg-blue p-2">
@@ -135,8 +137,8 @@
             </div>
         </div>
         <div class="d-flex justify-content-between mt-2">
-            <div class="fs-8">1 KEUMGANG</div>
-            <div class="fs-8">🕒 55</div>
+            {% comment %} <div class="fs-8">1 KEUMGANG</div> {% endcomment %}
+            {% comment %} <div class="fs-8">🕒 55</div> {% endcomment %}
         </div>
     </div>
 
@@ -148,7 +150,8 @@
         let totalBluePre = 0;
         let totalRed = 0;
         let totalBlue = 0;
-    
+        let contador = 0;
+
         const socket = new WebSocket("ws://127.0.0.1:8000/ws/evaluaciones/");
 
         socket.onopen = function(event) {
@@ -164,30 +167,54 @@
 
                 if (data.red && data.blue) {
                     const juezIndex = data.juez.replace('juez', '');
-                    document.getElementById(`red-acc-${juezIndex}`).textContent = data.red.acc;
-                    document.getElementById(`red-pre-${juezIndex}`).textContent = data.red.pre;
-                    document.getElementById(`blue-acc-${juezIndex}`).textContent = data.blue.acc;
-                    document.getElementById(`blue-pre-${juezIndex}`).textContent = data.blue.pre;
-
+                    contador += 1;
                     document.getElementById(`red-acc-${juezIndex}`).classList.replace('bg-gray2', 'bg-yellow')
                     document.getElementById(`red-pre-${juezIndex}`).classList.replace('bg-gray', 'bg-yellow')
                     document.getElementById(`blue-acc-${juezIndex}`).classList.replace('bg-gray2', 'bg-yellow')
                     document.getElementById(`blue-pre-${juezIndex}`).classList.replace('bg-gray', 'bg-yellow')
 
+
                     // Sumar la nota de red.acc al total
                     totalRedAcc += parseFloat(data.red.acc) / 3;
                     totalRedPre += parseFloat(data.red.pre) / 3;
                     totalRed = totalRedAcc + totalRedPre;
-                    document.getElementById(`total-red-acc`).textContent = (Math.round(totalRedAcc * 1000) / 1000).toFixed(3);
-                    document.getElementById(`total-red-pre`).textContent = (Math.round(totalRedPre * 1000) / 1000).toFixed(3);
-                    document.getElementById(`total-red`).textContent = totalRed.toFixed(3);
+
                     // Sumar la nota de red.acc al total
                     totalBlueAcc += parseFloat(data.blue.acc) / 3;
                     totalBluePre += parseFloat(data.blue.pre) / 3;
                     totalBlue = totalBlueAcc + totalBluePre;
-                    document.getElementById(`total-blue-acc`).textContent = (Math.round(totalBlueAcc * 1000) / 1000).toFixed(3);
-                    document.getElementById(`total-blue-pre`).textContent = (Math.round(totalBluePre * 1000) / 1000).toFixed(3);
-                    document.getElementById(`total-blue`).textContent = totalBlue.toFixed(3);
+
+                    if (contador == 3) {
+                        // Mostrar notas de jueces 
+                        document.getElementById(`red-acc-${juezIndex}`).textContent = data.red.acc;
+                        document.getElementById(`red-pre-${juezIndex}`).textContent = data.red.pre;
+                        document.getElementById(`blue-acc-${juezIndex}`).textContent = data.blue.acc;
+                        document.getElementById(`blue-pre-${juezIndex}`).textContent = data.blue.pre;
+                        // Mostrar el total rojo
+                        document.getElementById(`total-red-acc`).textContent = (Math.round(totalRedAcc * 1000) / 1000).toFixed(3);
+                        document.getElementById(`total-red-pre`).textContent = (Math.round(totalRedPre * 1000) / 1000).toFixed(3);
+                        document.getElementById(`total-red`).textContent = totalRed.toFixed(3);
+                        // Mostrar el total azul
+                        document.getElementById(`total-blue-acc`).textContent = (Math.round(totalBlueAcc * 1000) / 1000).toFixed(3);
+                        document.getElementById(`total-blue-pre`).textContent = (Math.round(totalBluePre * 1000) / 1000).toFixed(3);
+                        document.getElementById(`total-blue`).textContent = totalBlue.toFixed(3);
+
+                        //Alerta de ganador 
+                        if (totalRed > totalBlue) {
+                            //esperar 3 segundos
+                            window.setTimeout(function() {
+                                document.getElementById(`winner-red`).textContent = "RED";
+                                document.getElementById(`winner-blue`).textContent = "WINNER";
+                            }, 3000);
+                        } else if (totalRed < totalBlue) {
+                            window.setTimeout(function() {
+                                document.getElementById(`winner-red`).textContent = "BLUE";
+                                document.getElementById(`winner-blue`).textContent = "WINNER";
+                            }, 3000);
+                        }
+
+                    }
+
                 } else {
                     console.error("Datos en formato incorrecto:", data);
                 }
