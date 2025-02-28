@@ -12,6 +12,12 @@
             font-family: Arial, sans-serif;
             font-size: 4rem;
         }
+        .text-secondary {
+            color: #facc15 !important;
+        }
+        .text-white {
+            color:rgb(255, 255, 255) !important;
+        }
         .bg-blue {
             background-color:rgb(25, 42, 90);
         }
@@ -172,7 +178,15 @@
                     document.getElementById(`red-pre-${juezIndex}`).classList.replace('bg-gray', 'bg-yellow')
                     document.getElementById(`blue-acc-${juezIndex}`).classList.replace('bg-gray2', 'bg-yellow')
                     document.getElementById(`blue-pre-${juezIndex}`).classList.replace('bg-gray', 'bg-yellow')
+                    document.getElementById(`red-acc-${juezIndex}`).classList.add('text-secondary');
+                    document.getElementById(`red-pre-${juezIndex}`).classList.add('text-secondary');
+                    document.getElementById(`blue-acc-${juezIndex}`).classList.add('text-secondary');
+                    document.getElementById(`blue-pre-${juezIndex}`).classList.add('text-secondary');
 
+                    document.getElementById(`red-acc-${juezIndex}`).textContent = data.red.acc;
+                    document.getElementById(`red-pre-${juezIndex}`).textContent = data.red.pre;
+                    document.getElementById(`blue-acc-${juezIndex}`).textContent = data.blue.acc;
+                    document.getElementById(`blue-pre-${juezIndex}`).textContent = data.blue.pre;
 
                     // Sumar la nota de red.acc al total
                     totalRedAcc += parseFloat(data.red.acc) / 3;
@@ -185,11 +199,11 @@
                     totalBlue = totalBlueAcc + totalBluePre;
 
                     if (contador == 3) {
-                        // Mostrar notas de jueces 
-                        document.getElementById(`red-acc-${juezIndex}`).textContent = data.red.acc;
-                        document.getElementById(`red-pre-${juezIndex}`).textContent = data.red.pre;
-                        document.getElementById(`blue-acc-${juezIndex}`).textContent = data.blue.acc;
-                        document.getElementById(`blue-pre-${juezIndex}`).textContent = data.blue.pre;
+                        // Mostrar notas de jueces individuales al cambiar color de texto
+                        document.querySelectorAll('.text-secondary').forEach(element => {
+                            element.classList.replace('text-secondary', 'text-white');
+                        });
+
                         // Mostrar el total rojo
                         document.getElementById(`total-red-acc`).textContent = (Math.round(totalRedAcc * 1000) / 1000).toFixed(3);
                         document.getElementById(`total-red-pre`).textContent = (Math.round(totalRedPre * 1000) / 1000).toFixed(3);
@@ -198,6 +212,11 @@
                         document.getElementById(`total-blue-acc`).textContent = (Math.round(totalBlueAcc * 1000) / 1000).toFixed(3);
                         document.getElementById(`total-blue-pre`).textContent = (Math.round(totalBluePre * 1000) / 1000).toFixed(3);
                         document.getElementById(`total-blue`).textContent = totalBlue.toFixed(3);
+                        {% comment %} //Cambiar class para 2da nota
+                        document.getElementById(`red-acc-${juezIndex}`).id = `red-acc-${juezIndex}-done`;
+                        document.getElementById(`red-pre-${juezIndex}`).id = `red-pre-${juezIndex}-done`;
+                        document.getElementById(`blue-acc-${juezIndex}`).id = `blue-acc-${juezIndex}-done`;
+                        document.getElementById(`blue-pre-${juezIndex}`).id = `blue-pre-${juezIndex}-done`; {% endcomment %}
 
                         //Alerta de ganador 
                         if (totalRed > totalBlue) {
@@ -212,6 +231,7 @@
                                 document.getElementById(`winner-blue`).textContent = "WINNER";
                             }, 3000);
                         }
+
 
                     }
 
