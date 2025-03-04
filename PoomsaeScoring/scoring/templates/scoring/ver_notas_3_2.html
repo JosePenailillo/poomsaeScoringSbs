@@ -5,12 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notas en Tiempo Real</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    {% load static %}
     <style>
         body {
             background-color: black;
             color: white;
             font-family: Arial, sans-serif;
-            font-size: 4rem;
+            font-size: 4.3rem;
+        }
+        .container {
+            max-width: 90%;
         }
         .text-secondary {
             color: #facc15 !important;
@@ -53,11 +57,11 @@
 </head>
 <body>
     <!-- Primer Poomsae -->
-    <div class="container py-3">
-        <div class="d-flex justify-content-between mb-2">
-            <div class="fs-8">101</div>
-            <div class="fs-8">Male Under 30</div>
-            <div class="fs-8">Semi Final</div>
+    <div id="poomsae1" class="container py-3">
+        <div class="d-flex justify-content-between mb-5">
+            <div class="mt-8 fs-8">
+                <a href="#poomsae2"><img src="{% static 'IMG\Logo_Digitaltkd3.png' %}" alt="logo Digitaltkd" width="25%" ></a>
+            </div>
         </div>
         <div class="row">
             <!-- Left Column -->
@@ -152,17 +156,17 @@
             </div>
         </div>
         <div class="d-flex justify-content-between mt-2">
-            <div class="fs-8">1 KEUMGANG</div>
-            <div class="fs-8">🕒 55</div>
+            <div class="fs-8">1er Poomsae</div>
+            <div class="fs-8"></div>
         </div>
     </div>
-
+    <br>
     <!-- Segundo Poomsae -->
-    <div class="container py-3">
-        <div class="d-flex justify-content-between mb-2">
-            <div class="fs-8">101</div>
-            <div class="fs-8">Male Under 30</div>
-            <div class="fs-8">Semi Final</div>
+    <div id="poomsae2" class="container py-3">
+        <div class="d-flex justify-content-between mb-5">
+            <div class="fs-8">
+                <a href="#totalPoomsae"><img src="{% static 'IMG\Logo_Digitaltkd3.png' %}" alt="logo Digitaltkd" width="25%" ></a>
+            </div>
         </div>
         <div class="row">
             <!-- Left Column -->
@@ -256,21 +260,20 @@
             </div>
         </div>
         <div class="d-flex justify-content-between mt-2">
-            <div class="fs-8">2 KORYO</div>
-            <div class="fs-8">Poomsae 1</div>
-            <div class="fs-8">Total</div>
-            <div class="fs-8">🕒 55</div>
+            <div class="fs-8">2do Poomsae</div>
+            <div class="fs-8"></div>
         </div>
     </div>
-
+    <br>
+    
     <!-- Resultado final -->
-    <div class="container py-3">
-        <div class="d-flex justify-content-between mb-2">
-            <div class="fs-8">101</div>
-            <div class="fs-8">Male Under 30</div>
-            <div class="fs-8">Semi Final</div>
+    <div id="totalPoomsae" class="container py-3">
+        <div class="d-flex justify-content-between mb-5">
+            <div class="fs-8">
+                <a href="#poomsae1"><img src="{% static 'IMG\Logo_Digitaltkd3.png' %}" alt="logo Digitaltkd" width="25%" ></a>
+            </div>
         </div>
-        <div class="row">
+        <div class="row">   
             <!-- Left Column -->
             <div class="col-3 bg-red p-2">
                 <div class="d-flex justify-content-between mb-1 opacity-25">
@@ -365,12 +368,14 @@
         </div>
         <div class="d-flex justify-content-between mt-2">
             <div class="fs-8"></div>
-            <div class="fs-8">Poomsae 1</div>
-            <div class="fs-8">Poomsae 2</div>
+            <div class="fs-8"></div>
+            <div id="FINAL" class="fs-8">Promedio</div>
+            <div class="fs-8"></div>
             <div class="fs-8"></div>
         </div>
     </div>
-
+    <br>
+    <br>
     <script>
         // Conectar al WebSocket
         let totalRedAcc = 0;
@@ -446,22 +451,26 @@
                                 document.getElementById(`promedio-red`).textContent = redTotal.toFixed(3);
 
                                 //Alerta de ganador 
-                                if (redTotal > blueTotal) {
-                                    //esperar 3 segundos
-                                    window.setTimeout(function() {
-                                        document.getElementById(`winner-red`).classList.add('text-shadow', 'dark-red');
-                                        document.getElementById(`winner-blue`).classList.add('text-shadow', 'dark-red');
-                                        document.getElementById(`winner-red`).textContent = "RED";
-                                        document.getElementById(`winner-blue`).textContent = "WINNER";
-                                    }, 3000);
-                                } else if (totalRed < totalBlue) {
-                                    window.setTimeout(function() {
-                                        document.getElementById(`winner-red`).classList.add('text-shadow', 'dark-blue');
-                                        document.getElementById(`winner-blue`).classList.add('text-shadow', 'dark-blue');
-                                        document.getElementById(`winner-red`).textContent = "BLUE";
-                                        document.getElementById(`winner-blue`).textContent = "WINNER";
-                                    }, 3000);
-                                }
+                                document.getElementById('FINAL').addEventListener('click', function() {
+                                    if (redTotal > blueTotal) {
+                                        //esperar 3 segundos
+                                        window.setTimeout(function() {
+                                            document.getElementById(`winner-red`).classList.add('text-shadow', 'dark-red');
+                                            document.getElementById(`winner-blue`).classList.add('text-shadow', 'dark-red');
+                                            document.getElementById(`winner-red`).textContent = "RED";
+                                            document.getElementById(`winner-blue`).textContent = "WINNER";
+                                            console.log("Ganador: RED");
+                                        }, 3000);
+                                    } else if (redTotal < blueTotal) {
+                                        window.setTimeout(function() {
+                                            document.getElementById(`winner-red`).classList.add('text-shadow', 'dark-blue');
+                                            document.getElementById(`winner-blue`).classList.add('text-shadow', 'dark-blue');
+                                            document.getElementById(`winner-red`).textContent = "BLUE";
+                                            document.getElementById(`winner-blue`).textContent = "WINNER";
+                                            console.log("Ganador: BLUE");
+                                        }, 3000);
+                                    } 
+                                });
                             }
 
                             console.log(contador);  
