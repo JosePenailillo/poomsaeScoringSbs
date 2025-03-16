@@ -30,6 +30,16 @@ def ver_notas3_2(request):
     """Renderiza la página para ver las notas en tiempo real"""
     return render(request, "scoring/ver_notas_3_2.html")
 
+@login_required  # Restringe la vista a usuarios autenticados
+def ver_notas5_2(request):
+    """Renderiza la página para ver las notas en tiempo real"""
+    return render(request, "scoring/ver_notas_5_2.html")
+
+@login_required  # Restringe la vista a usuarios autenticados
+def ver_notas7_2(request):
+    """Renderiza la página para ver las notas en tiempo real"""
+    return render(request, "scoring/ver_notas_5_2.html")
+
 @csrf_exempt
 @login_required  # Restringe la vista a usuarios autenticados
 def evaluar(request):
