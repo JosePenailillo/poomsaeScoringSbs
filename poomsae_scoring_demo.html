@@ -2,477 +2,560 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Poomsae Scoring - Demo</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
     
     <style>
+        * {
+            box-sizing: border-box;
+        }
+
         body {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
+            margin: 0;
+            padding: 0;
+            background: #f0f0f0;
+            overflow-x: hidden;
         }
-        
-        .container-scoring {
-            background: white;
-            border-radius: 15px;
-            padding: 30px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-            margin-bottom: 30px;
-        }
-        
+
         .header {
             text-align: center;
-            margin-bottom: 30px;
-            border-bottom: 3px solid #667eea;
-            padding-bottom: 20px;
+            padding: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            margin-bottom: 10px;
         }
-        
+
         .header h1 {
-            color: #333;
-            font-weight: bold;
-            margin-bottom: 5px;
-        }
-        
-        .competitor-section {
-            margin-bottom: 30px;
-        }
-        
-        .competitor-title {
+            margin: 0;
             font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            text-align: center;
         }
-        
-        .competitor-red {
+
+        .container-main {
+            display: flex;
+            flex-direction: row;
+            height: 100vh;
+            padding: 0;
+            margin: 0;
+            width: 100%;
+        }
+
+        /* PANEL ROJO */
+        .panel-red {
+            flex: 1;
+            background: #ffe0e0;
+            display: flex;
+            flex-direction: column;
+            border-right: 3px solid #dc3545;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        /* PANEL AZUL */
+        .panel-blue {
+            flex: 1;
+            background: #e0e7ff;
+            display: flex;
+            flex-direction: column;
+            padding: 10px;
+            overflow-y: auto;
+        }
+
+        .panel-title {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            padding: 5px 0;
+            border-bottom: 2px solid;
+        }
+
+        .panel-title.red {
             color: #dc3545;
+            border-color: #dc3545;
         }
-        
-        .competitor-blue {
+
+        .panel-title.blue {
             color: #0d6efd;
+            border-color: #0d6efd;
         }
-        
-        .penalty-buttons {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        
-        .btn-large {
-            padding: 30px;
-            font-size: 24px;
-            font-weight: bold;
-            border-radius: 10px;
-            transition: transform 0.2s;
-        }
-        
-        .btn-large:hover {
-            transform: scale(1.05);
-        }
-        
-        .score-display {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
+
+        .score-section {
             text-align: center;
-        }
-        
-        .score-box {
-            display: inline-block;
+            margin-bottom: 10px;
+            padding: 8px;
             background: white;
-            padding: 20px 40px;
-            border-radius: 10px;
-            margin: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            min-width: 200px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
-        
+
         .score-label {
-            font-size: 14px;
+            font-size: 11px;
             font-weight: bold;
             text-transform: uppercase;
             color: #666;
-            margin-bottom: 5px;
         }
-        
+
         .score-value {
-            font-size: 36px;
+            font-size: 28px;
             font-weight: bold;
             margin: 5px 0;
         }
-        
+
         .score-red {
             color: #dc3545;
         }
-        
+
         .score-blue {
             color: #0d6efd;
         }
-        
-        .presentation-section {
-            background: #f8f9fa;
-            padding: 20px;
-            border-radius: 10px;
-            margin: 20px 0;
+
+        /* BOTONES DE PENALIZACIÓN */
+        .penalty-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+            margin-bottom: 10px;
+            margin-top: 0;
         }
-        
-        .btn-group-custom {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 5px;
-            margin: 10px 0;
-        }
-        
-        .btn-score {
-            padding: 8px 12px;
-            font-size: 12px;
+
+        .btn-penalty {
+            padding: 12px;
+            font-size: 16px;
             font-weight: bold;
-            border: 2px solid #ddd;
-            border-radius: 5px;
+            border: none;
+            border-radius: 6px;
             cursor: pointer;
+            color: white;
             transition: all 0.2s;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+        }
+
+        .btn-penalty:active {
+            transform: scale(0.95);
+        }
+
+        .btn-penalty-red {
+            background: #dc3545;
+        }
+
+        .btn-penalty-blue {
+            background: #0d6efd;
+        }
+
+        .btn-penalty-plus {
+            background: #28a745;
+        }
+
+        .btn-penalty:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+        }
+
+        /* PRESENTATION SECTION */
+        .presentation-section {
             background: white;
+            padding: 8px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        .presentation-title {
+            font-weight: bold;
+            font-size: 12px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            padding-bottom: 5px;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .presentation-red .presentation-title {
+            color: #dc3545;
+        }
+
+        .presentation-blue .presentation-title {
+            color: #0d6efd;
+        }
+
+        .criteria-group {
+            margin-bottom: 8px;
+        }
+
+        .criteria-name {
+            font-size: 11px;
+            font-weight: bold;
+            margin-bottom: 4px;
             color: #333;
         }
-        
-        .btn-score:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+
+        .btn-score-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 3px;
+            justify-content: center;
         }
-        
+
+        .btn-score {
+            padding: 5px 8px;
+            font-size: 10px;
+            font-weight: bold;
+            border: 1px solid #ddd;
+            background: white;
+            color: #333;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex: 0 0 calc(20% - 3px);
+        }
+
+        .btn-score:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
         .btn-score.active {
             background: #667eea;
             color: white;
             border-color: #667eea;
             font-weight: bold;
         }
-        
+
         .btn-score.excellent {
             border-color: #28a745;
         }
-        
+
         .btn-score.good {
             border-color: #ffc107;
         }
-        
+
         .btn-score.acceptable {
             border-color: #17a2b8;
         }
-        
+
         .btn-score.poor {
             border-color: #dc3545;
         }
-        
-        .send-button {
-            padding: 20px 40px;
-            font-size: 18px;
+
+        .collapse-button {
+            width: 100%;
+            padding: 8px;
+            font-size: 12px;
             font-weight: bold;
-            border-radius: 10px;
-            margin-top: 30px;
-        }
-        
-        .collapse-header {
-            font-weight: bold;
-            padding: 15px;
+            border: 2px solid;
+            border-radius: 6px;
             background: white;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            margin: 10px 0;
             cursor: pointer;
+            transition: all 0.2s;
+            margin-bottom: 8px;
         }
-        
-        .collapse-header.red {
+
+        .collapse-button.red {
             border-color: #dc3545;
             color: #dc3545;
         }
-        
-        .collapse-header.blue {
+
+        .collapse-button.blue {
             border-color: #0d6efd;
             color: #0d6efd;
         }
-        
-        .total-score-display {
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
-            padding: 30px;
-            border-radius: 15px;
-            text-align: center;
-            margin: 30px 0;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+
+        .collapse-button:hover {
+            background: #f0f0f0;
         }
-        
-        .total-score-display h2 {
-            font-size: 48px;
-            font-weight: bold;
-            margin: 10px 0;
+
+        .collapse-button.collapsed::after {
+            content: " ▼";
         }
-        
+
+        .collapse-button:not(.collapsed)::after {
+            content: " ▲";
+        }
+
+        /* RESPONSIVE */
+        @media (max-width: 768px) {
+            .container-main {
+                flex-direction: row;
+            }
+
+            .panel-red, .panel-blue {
+                padding: 8px;
+            }
+
+            .btn-score {
+                flex: 0 0 calc(25% - 2px);
+                font-size: 9px;
+                padding: 4px 6px;
+            }
+
+            .score-value {
+                font-size: 24px;
+            }
+
+            .panel-title {
+                font-size: 14px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .btn-score {
+                flex: 0 0 calc(33% - 2px);
+                font-size: 8px;
+                padding: 3px 4px;
+            }
+
+            .score-value {
+                font-size: 20px;
+            }
+
+            .panel-title {
+                font-size: 12px;
+            }
+
+            .btn-penalty {
+                padding: 10px;
+                font-size: 14px;
+            }
+        }
+
         .demo-notice {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            right: 10px;
             background: #e7f3ff;
-            border-left: 4px solid #0d6efd;
-            padding: 15px;
+            border: 2px solid #0d6efd;
+            padding: 8px;
             border-radius: 5px;
-            margin-bottom: 20px;
+            font-size: 11px;
             color: #0d6efd;
+            z-index: 1000;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
         }
-        
-        .modal-backdrop {
-            background-color: rgba(0,0,0,0.7);
+
+        .collapse-content {
+            max-height: 1000px;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .collapse-content.hidden {
+            max-height: 0;
         }
     </style>
 </head>
 <body>
-    <div class="container-scoring">
-        <div class="header">
-            <h1>🥋 Poomsae Scoring System</h1>
-            <p class="text-muted">Sistema de Puntuación para Competiciones de Poomsae</p>
-        </div>
-        
-        <div class="demo-notice">
-            ℹ️ <strong>Demo Mode:</strong> Los datos se guardan en tu navegador. Recarga la página para resetear.
-        </div>
+    <div class="header">
+        <h1>🥋 Poomsae Scoring</h1>
+    </div>
 
-        <div class="row">
-            <!-- COMPETIDOR ROJO -->
-            <div class="col-lg-6">
-                <div class="competitor-section">
-                    <div class="competitor-title competitor-red">🔴 COMPETIDOR ROJO</div>
-                    
-                    <div class="penalty-buttons">
-                        <button class="btn btn-danger btn-large" onclick="applyPenalty('red', -0.3)">
-                            <span>-0.3</span>
-                        </button>
-                        <button class="btn btn-danger btn-large" onclick="applyPenalty('red', -0.1)">
-                            <span>-0.1</span>
-                        </button>
-                        <button class="btn btn-success btn-large" onclick="applyPenalty('red', +0.1)">
-                            <span>+0.1</span>
-                        </button>
-                        <button class="btn btn-success btn-large" onclick="applyPenalty('red', +0.3)">
-                            <span>+0.3</span>
-                        </button>
-                    </div>
+    <div class="container-main">
+        <!-- PANEL ROJO -->
+        <div class="panel-red">
+            <div class="panel-title red">🔴 ROJO</div>
 
-                    <div class="score-display">
-                        <div class="score-box">
-                            <div class="score-label">Accuracy</div>
-                            <div class="score-value score-red" id="accuracy-red">4.0</div>
-                        </div>
-                        <div class="score-box">
-                            <div class="score-label">Presentation</div>
-                            <div class="score-value score-red" id="presentation-red">6.0</div>
-                        </div>
-                    </div>
-
-                    <!-- PRESENTATION ROJO -->
-                    <button class="collapse-header red w-100" type="button" data-bs-toggle="collapse" data-bs-target="#collapseRed" aria-expanded="false">
-                        ▼ Detalles de Presentación (ROJO)
-                    </button>
-
-                    <div class="collapse" id="collapseRed">
-                        <div class="presentation-section">
-                            <!-- Fuerza y Velocidad -->
-                            <h5 class="mt-3">💪 Fuerza y Velocidad</h5>
-                            <div class="btn-group-custom" id="red-fuerza">
-                                <button class="btn-score excellent" onclick="updateScore('fuerza', 'red', 2.0, this)">2.0</button>
-                                <button class="btn-score excellent" onclick="updateScore('fuerza', 'red', 1.9, this)">1.9</button>
-                                <button class="btn-score excellent" onclick="updateScore('fuerza', 'red', 1.8, this)">1.8</button>
-                                <button class="btn-score excellent" onclick="updateScore('fuerza', 'red', 1.7, this)">1.7</button>
-                                <button class="btn-score good" onclick="updateScore('fuerza', 'red', 1.6, this)">1.6</button>
-                                <button class="btn-score good" onclick="updateScore('fuerza', 'red', 1.5, this)">1.5</button>
-                                <button class="btn-score good" onclick="updateScore('fuerza', 'red', 1.4, this)">1.4</button>
-                                <button class="btn-score acceptable" onclick="updateScore('fuerza', 'red', 1.3, this)">1.3</button>
-                                <button class="btn-score acceptable" onclick="updateScore('fuerza', 'red', 1.2, this)">1.2</button>
-                                <button class="btn-score acceptable" onclick="updateScore('fuerza', 'red', 1.1, this)">1.1</button>
-                                <button class="btn-score acceptable" onclick="updateScore('fuerza', 'red', 1.0, this)">1.0</button>
-                                <button class="btn-score acceptable" onclick="updateScore('fuerza', 'red', 0.9, this)">0.9</button>
-                                <button class="btn-score acceptable" onclick="updateScore('fuerza', 'red', 0.8, this)">0.8</button>
-                                <button class="btn-score poor" onclick="updateScore('fuerza', 'red', 0.7, this)">0.7</button>
-                                <button class="btn-score poor" onclick="updateScore('fuerza', 'red', 0.6, this)">0.6</button>
-                                <button class="btn-score poor" onclick="updateScore('fuerza', 'red', 0.5, this)">0.5</button>
-                            </div>
-
-                            <!-- Tempo y Ritmo -->
-                            <h5 class="mt-3">⏱️ Tempo y Ritmo</h5>
-                            <div class="btn-group-custom" id="red-ritmo">
-                                <button class="btn-score excellent" onclick="updateScore('ritmo', 'red', 2.0, this)">2.0</button>
-                                <button class="btn-score excellent" onclick="updateScore('ritmo', 'red', 1.9, this)">1.9</button>
-                                <button class="btn-score excellent" onclick="updateScore('ritmo', 'red', 1.8, this)">1.8</button>
-                                <button class="btn-score excellent" onclick="updateScore('ritmo', 'red', 1.7, this)">1.7</button>
-                                <button class="btn-score good" onclick="updateScore('ritmo', 'red', 1.6, this)">1.6</button>
-                                <button class="btn-score good" onclick="updateScore('ritmo', 'red', 1.5, this)">1.5</button>
-                                <button class="btn-score good" onclick="updateScore('ritmo', 'red', 1.4, this)">1.4</button>
-                                <button class="btn-score acceptable" onclick="updateScore('ritmo', 'red', 1.3, this)">1.3</button>
-                                <button class="btn-score acceptable" onclick="updateScore('ritmo', 'red', 1.2, this)">1.2</button>
-                                <button class="btn-score acceptable" onclick="updateScore('ritmo', 'red', 1.1, this)">1.1</button>
-                                <button class="btn-score acceptable" onclick="updateScore('ritmo', 'red', 1.0, this)">1.0</button>
-                                <button class="btn-score acceptable" onclick="updateScore('ritmo', 'red', 0.9, this)">0.9</button>
-                                <button class="btn-score acceptable" onclick="updateScore('ritmo', 'red', 0.8, this)">0.8</button>
-                                <button class="btn-score poor" onclick="updateScore('ritmo', 'red', 0.7, this)">0.7</button>
-                                <button class="btn-score poor" onclick="updateScore('ritmo', 'red', 0.6, this)">0.6</button>
-                                <button class="btn-score poor" onclick="updateScore('ritmo', 'red', 0.5, this)">0.5</button>
-                            </div>
-
-                            <!-- Expresión de Energía -->
-                            <h5 class="mt-3">⚡ Expresión de Energía</h5>
-                            <div class="btn-group-custom" id="red-energia">
-                                <button class="btn-score excellent" onclick="updateScore('energia', 'red', 2.0, this)">2.0</button>
-                                <button class="btn-score excellent" onclick="updateScore('energia', 'red', 1.9, this)">1.9</button>
-                                <button class="btn-score excellent" onclick="updateScore('energia', 'red', 1.8, this)">1.8</button>
-                                <button class="btn-score excellent" onclick="updateScore('energia', 'red', 1.7, this)">1.7</button>
-                                <button class="btn-score good" onclick="updateScore('energia', 'red', 1.6, this)">1.6</button>
-                                <button class="btn-score good" onclick="updateScore('energia', 'red', 1.5, this)">1.5</button>
-                                <button class="btn-score good" onclick="updateScore('energia', 'red', 1.4, this)">1.4</button>
-                                <button class="btn-score acceptable" onclick="updateScore('energia', 'red', 1.3, this)">1.3</button>
-                                <button class="btn-score acceptable" onclick="updateScore('energia', 'red', 1.2, this)">1.2</button>
-                                <button class="btn-score acceptable" onclick="updateScore('energia', 'red', 1.1, this)">1.1</button>
-                                <button class="btn-score acceptable" onclick="updateScore('energia', 'red', 1.0, this)">1.0</button>
-                                <button class="btn-score acceptable" onclick="updateScore('energia', 'red', 0.9, this)">0.9</button>
-                                <button class="btn-score acceptable" onclick="updateScore('energia', 'red', 0.8, this)">0.8</button>
-                                <button class="btn-score poor" onclick="updateScore('energia', 'red', 0.7, this)">0.7</button>
-                                <button class="btn-score poor" onclick="updateScore('energia', 'red', 0.6, this)">0.6</button>
-                                <button class="btn-score poor" onclick="updateScore('energia', 'red', 0.5, this)">0.5</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <!-- SCORE DISPLAY RED -->
+            <div class="score-section">
+                <div class="score-label">Accuracy</div>
+                <div class="score-value score-red" id="accuracy-red">4.0</div>
             </div>
 
-            <!-- COMPETIDOR AZUL -->
-            <div class="col-lg-6">
-                <div class="competitor-section">
-                    <div class="competitor-title competitor-blue">🔵 COMPETIDOR AZUL</div>
-                    
-                    <div class="penalty-buttons">
-                        <button class="btn btn-primary btn-large" onclick="applyPenalty('blue', -0.3)">
-                            <span>-0.3</span>
-                        </button>
-                        <button class="btn btn-primary btn-large" onclick="applyPenalty('blue', -0.1)">
-                            <span>-0.1</span>
-                        </button>
-                        <button class="btn btn-success btn-large" onclick="applyPenalty('blue', +0.1)">
-                            <span>+0.1</span>
-                        </button>
-                        <button class="btn btn-success btn-large" onclick="applyPenalty('blue', +0.3)">
-                            <span>+0.3</span>
-                        </button>
+            <div class="score-section">
+                <div class="score-label">Presentation</div>
+                <div class="score-value score-red" id="presentation-red">6.0</div>
+            </div>
+
+            <!-- PENALTY BUTTONS RED -->
+            <div class="penalty-container">
+                <button class="btn-penalty btn-penalty-red" onclick="applyPenalty('red', -0.3)">-0.3</button>
+                <button class="btn-penalty btn-penalty-red" onclick="applyPenalty('red', -0.1)">-0.1</button>
+                <button class="btn-penalty btn-penalty-plus" onclick="applyPenalty('red', +0.1)">+0.1</button>
+                <button class="btn-penalty btn-penalty-plus" onclick="applyPenalty('red', +0.3)">+0.3</button>
+            </div>
+
+            <!-- PRESENTATION ROJO -->
+            <button class="collapse-button red" onclick="toggleCollapse('red-presentation', this)">Presentation</button>
+            
+            <div class="collapse-content" id="red-presentation">
+                <div class="presentation-section presentation-red">
+                    <!-- Fuerza y Velocidad -->
+                    <div class="criteria-group">
+                        <div class="criteria-name">💪 Fuerza y Velocidad</div>
+                        <div class="btn-score-group" id="red-fuerza">
+                            <button class="btn-score excellent" onclick="updateScore('fuerza', 'red', 2.0, this)">2.0</button>
+                            <button class="btn-score excellent" onclick="updateScore('fuerza', 'red', 1.9, this)">1.9</button>
+                            <button class="btn-score excellent" onclick="updateScore('fuerza', 'red', 1.8, this)">1.8</button>
+                            <button class="btn-score excellent" onclick="updateScore('fuerza', 'red', 1.7, this)">1.7</button>
+                            <button class="btn-score good" onclick="updateScore('fuerza', 'red', 1.6, this)">1.6</button>
+                            <button class="btn-score good" onclick="updateScore('fuerza', 'red', 1.5, this)">1.5</button>
+                            <button class="btn-score good" onclick="updateScore('fuerza', 'red', 1.4, this)">1.4</button>
+                            <button class="btn-score acceptable" onclick="updateScore('fuerza', 'red', 1.3, this)">1.3</button>
+                            <button class="btn-score acceptable" onclick="updateScore('fuerza', 'red', 1.2, this)">1.2</button>
+                            <button class="btn-score acceptable" onclick="updateScore('fuerza', 'red', 1.1, this)">1.1</button>
+                            <button class="btn-score acceptable" onclick="updateScore('fuerza', 'red', 1.0, this)">1.0</button>
+                            <button class="btn-score acceptable" onclick="updateScore('fuerza', 'red', 0.9, this)">0.9</button>
+                            <button class="btn-score acceptable" onclick="updateScore('fuerza', 'red', 0.8, this)">0.8</button>
+                            <button class="btn-score poor" onclick="updateScore('fuerza', 'red', 0.7, this)">0.7</button>
+                            <button class="btn-score poor" onclick="updateScore('fuerza', 'red', 0.6, this)">0.6</button>
+                            <button class="btn-score poor" onclick="updateScore('fuerza', 'red', 0.5, this)">0.5</button>
+                        </div>
                     </div>
 
-                    <div class="score-display">
-                        <div class="score-box">
-                            <div class="score-label">Accuracy</div>
-                            <div class="score-value score-blue" id="accuracy-blue">4.0</div>
-                        </div>
-                        <div class="score-box">
-                            <div class="score-label">Presentation</div>
-                            <div class="score-value score-blue" id="presentation-blue">6.0</div>
+                    <!-- Tempo y Ritmo -->
+                    <div class="criteria-group">
+                        <div class="criteria-name">⏱️ Tempo y Ritmo</div>
+                        <div class="btn-score-group" id="red-ritmo">
+                            <button class="btn-score excellent" onclick="updateScore('ritmo', 'red', 2.0, this)">2.0</button>
+                            <button class="btn-score excellent" onclick="updateScore('ritmo', 'red', 1.9, this)">1.9</button>
+                            <button class="btn-score excellent" onclick="updateScore('ritmo', 'red', 1.8, this)">1.8</button>
+                            <button class="btn-score excellent" onclick="updateScore('ritmo', 'red', 1.7, this)">1.7</button>
+                            <button class="btn-score good" onclick="updateScore('ritmo', 'red', 1.6, this)">1.6</button>
+                            <button class="btn-score good" onclick="updateScore('ritmo', 'red', 1.5, this)">1.5</button>
+                            <button class="btn-score good" onclick="updateScore('ritmo', 'red', 1.4, this)">1.4</button>
+                            <button class="btn-score acceptable" onclick="updateScore('ritmo', 'red', 1.3, this)">1.3</button>
+                            <button class="btn-score acceptable" onclick="updateScore('ritmo', 'red', 1.2, this)">1.2</button>
+                            <button class="btn-score acceptable" onclick="updateScore('ritmo', 'red', 1.1, this)">1.1</button>
+                            <button class="btn-score acceptable" onclick="updateScore('ritmo', 'red', 1.0, this)">1.0</button>
+                            <button class="btn-score acceptable" onclick="updateScore('ritmo', 'red', 0.9, this)">0.9</button>
+                            <button class="btn-score acceptable" onclick="updateScore('ritmo', 'red', 0.8, this)">0.8</button>
+                            <button class="btn-score poor" onclick="updateScore('ritmo', 'red', 0.7, this)">0.7</button>
+                            <button class="btn-score poor" onclick="updateScore('ritmo', 'red', 0.6, this)">0.6</button>
+                            <button class="btn-score poor" onclick="updateScore('ritmo', 'red', 0.5, this)">0.5</button>
                         </div>
                     </div>
 
-                    <!-- PRESENTATION AZUL -->
-                    <button class="collapse-header blue w-100" type="button" data-bs-toggle="collapse" data-bs-target="#collapseBlue" aria-expanded="false">
-                        ▼ Detalles de Presentación (AZUL)
-                    </button>
-
-                    <div class="collapse" id="collapseBlue">
-                        <div class="presentation-section">
-                            <!-- Fuerza y Velocidad -->
-                            <h5 class="mt-3">💪 Fuerza y Velocidad</h5>
-                            <div class="btn-group-custom" id="blue-fuerza">
-                                <button class="btn-score excellent" onclick="updateScore('fuerza', 'blue', 2.0, this)">2.0</button>
-                                <button class="btn-score excellent" onclick="updateScore('fuerza', 'blue', 1.9, this)">1.9</button>
-                                <button class="btn-score excellent" onclick="updateScore('fuerza', 'blue', 1.8, this)">1.8</button>
-                                <button class="btn-score excellent" onclick="updateScore('fuerza', 'blue', 1.7, this)">1.7</button>
-                                <button class="btn-score good" onclick="updateScore('fuerza', 'blue', 1.6, this)">1.6</button>
-                                <button class="btn-score good" onclick="updateScore('fuerza', 'blue', 1.5, this)">1.5</button>
-                                <button class="btn-score good" onclick="updateScore('fuerza', 'blue', 1.4, this)">1.4</button>
-                                <button class="btn-score acceptable" onclick="updateScore('fuerza', 'blue', 1.3, this)">1.3</button>
-                                <button class="btn-score acceptable" onclick="updateScore('fuerza', 'blue', 1.2, this)">1.2</button>
-                                <button class="btn-score acceptable" onclick="updateScore('fuerza', 'blue', 1.1, this)">1.1</button>
-                                <button class="btn-score acceptable" onclick="updateScore('fuerza', 'blue', 1.0, this)">1.0</button>
-                                <button class="btn-score acceptable" onclick="updateScore('fuerza', 'blue', 0.9, this)">0.9</button>
-                                <button class="btn-score acceptable" onclick="updateScore('fuerza', 'blue', 0.8, this)">0.8</button>
-                                <button class="btn-score poor" onclick="updateScore('fuerza', 'blue', 0.7, this)">0.7</button>
-                                <button class="btn-score poor" onclick="updateScore('fuerza', 'blue', 0.6, this)">0.6</button>
-                                <button class="btn-score poor" onclick="updateScore('fuerza', 'blue', 0.5, this)">0.5</button>
-                            </div>
-
-                            <!-- Tempo y Ritmo -->
-                            <h5 class="mt-3">⏱️ Tempo y Ritmo</h5>
-                            <div class="btn-group-custom" id="blue-ritmo">
-                                <button class="btn-score excellent" onclick="updateScore('ritmo', 'blue', 2.0, this)">2.0</button>
-                                <button class="btn-score excellent" onclick="updateScore('ritmo', 'blue', 1.9, this)">1.9</button>
-                                <button class="btn-score excellent" onclick="updateScore('ritmo', 'blue', 1.8, this)">1.8</button>
-                                <button class="btn-score excellent" onclick="updateScore('ritmo', 'blue', 1.7, this)">1.7</button>
-                                <button class="btn-score good" onclick="updateScore('ritmo', 'blue', 1.6, this)">1.6</button>
-                                <button class="btn-score good" onclick="updateScore('ritmo', 'blue', 1.5, this)">1.5</button>
-                                <button class="btn-score good" onclick="updateScore('ritmo', 'blue', 1.4, this)">1.4</button>
-                                <button class="btn-score acceptable" onclick="updateScore('ritmo', 'blue', 1.3, this)">1.3</button>
-                                <button class="btn-score acceptable" onclick="updateScore('ritmo', 'blue', 1.2, this)">1.2</button>
-                                <button class="btn-score acceptable" onclick="updateScore('ritmo', 'blue', 1.1, this)">1.1</button>
-                                <button class="btn-score acceptable" onclick="updateScore('ritmo', 'blue', 1.0, this)">1.0</button>
-                                <button class="btn-score acceptable" onclick="updateScore('ritmo', 'blue', 0.9, this)">0.9</button>
-                                <button class="btn-score acceptable" onclick="updateScore('ritmo', 'blue', 0.8, this)">0.8</button>
-                                <button class="btn-score poor" onclick="updateScore('ritmo', 'blue', 0.7, this)">0.7</button>
-                                <button class="btn-score poor" onclick="updateScore('ritmo', 'blue', 0.6, this)">0.6</button>
-                                <button class="btn-score poor" onclick="updateScore('ritmo', 'blue', 0.5, this)">0.5</button>
-                            </div>
-
-                            <!-- Expresión de Energía -->
-                            <h5 class="mt-3">⚡ Expresión de Energía</h5>
-                            <div class="btn-group-custom" id="blue-energia">
-                                <button class="btn-score excellent" onclick="updateScore('energia', 'blue', 2.0, this)">2.0</button>
-                                <button class="btn-score excellent" onclick="updateScore('energia', 'blue', 1.9, this)">1.9</button>
-                                <button class="btn-score excellent" onclick="updateScore('energia', 'blue', 1.8, this)">1.8</button>
-                                <button class="btn-score excellent" onclick="updateScore('energia', 'blue', 1.7, this)">1.7</button>
-                                <button class="btn-score good" onclick="updateScore('energia', 'blue', 1.6, this)">1.6</button>
-                                <button class="btn-score good" onclick="updateScore('energia', 'blue', 1.5, this)">1.5</button>
-                                <button class="btn-score good" onclick="updateScore('energia', 'blue', 1.4, this)">1.4</button>
-                                <button class="btn-score acceptable" onclick="updateScore('energia', 'blue', 1.3, this)">1.3</button>
-                                <button class="btn-score acceptable" onclick="updateScore('energia', 'blue', 1.2, this)">1.2</button>
-                                <button class="btn-score acceptable" onclick="updateScore('energia', 'blue', 1.1, this)">1.1</button>
-                                <button class="btn-score acceptable" onclick="updateScore('energia', 'blue', 1.0, this)">1.0</button>
-                                <button class="btn-score acceptable" onclick="updateScore('energia', 'blue', 0.9, this)">0.9</button>
-                                <button class="btn-score acceptable" onclick="updateScore('energia', 'blue', 0.8, this)">0.8</button>
-                                <button class="btn-score poor" onclick="updateScore('energia', 'blue', 0.7, this)">0.7</button>
-                                <button class="btn-score poor" onclick="updateScore('energia', 'blue', 0.6, this)">0.6</button>
-                                <button class="btn-score poor" onclick="updateScore('energia', 'blue', 0.5, this)">0.5</button>
-                            </div>
+                    <!-- Expresión de Energía -->
+                    <div class="criteria-group">
+                        <div class="criteria-name">⚡ Expresión de Energía</div>
+                        <div class="btn-score-group" id="red-energia">
+                            <button class="btn-score excellent" onclick="updateScore('energia', 'red', 2.0, this)">2.0</button>
+                            <button class="btn-score excellent" onclick="updateScore('energia', 'red', 1.9, this)">1.9</button>
+                            <button class="btn-score excellent" onclick="updateScore('energia', 'red', 1.8, this)">1.8</button>
+                            <button class="btn-score excellent" onclick="updateScore('energia', 'red', 1.7, this)">1.7</button>
+                            <button class="btn-score good" onclick="updateScore('energia', 'red', 1.6, this)">1.6</button>
+                            <button class="btn-score good" onclick="updateScore('energia', 'red', 1.5, this)">1.5</button>
+                            <button class="btn-score good" onclick="updateScore('energia', 'red', 1.4, this)">1.4</button>
+                            <button class="btn-score acceptable" onclick="updateScore('energia', 'red', 1.3, this)">1.3</button>
+                            <button class="btn-score acceptable" onclick="updateScore('energia', 'red', 1.2, this)">1.2</button>
+                            <button class="btn-score acceptable" onclick="updateScore('energia', 'red', 1.1, this)">1.1</button>
+                            <button class="btn-score acceptable" onclick="updateScore('energia', 'red', 1.0, this)">1.0</button>
+                            <button class="btn-score acceptable" onclick="updateScore('energia', 'red', 0.9, this)">0.9</button>
+                            <button class="btn-score acceptable" onclick="updateScore('energia', 'red', 0.8, this)">0.8</button>
+                            <button class="btn-score poor" onclick="updateScore('energia', 'red', 0.7, this)">0.7</button>
+                            <button class="btn-score poor" onclick="updateScore('energia', 'red', 0.6, this)">0.6</button>
+                            <button class="btn-score poor" onclick="updateScore('energia', 'red', 0.5, this)">0.5</button>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- MARCADOR TOTAL -->
-        <div class="total-score-display">
-            <h3>PUNTUACIÓN TOTAL</h3>
-            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 30px; margin-top: 20px;">
-                <div>
-                    <p style="font-size: 18px; margin-bottom: 10px;">🔴 ROJO</p>
-                    <h2 id="total-red">10.0</h2>
-                </div>
-                <div>
-                    <p style="font-size: 18px; margin-bottom: 10px;">🔵 AZUL</p>
-                    <h2 id="total-blue">10.0</h2>
+        <!-- PANEL AZUL -->
+        <div class="panel-blue">
+            <div class="panel-title blue">🔵 AZUL</div>
+
+            <!-- SCORE DISPLAY BLUE -->
+            <div class="score-section">
+                <div class="score-label">Accuracy</div>
+                <div class="score-value score-blue" id="accuracy-blue">4.0</div>
+            </div>
+
+            <div class="score-section">
+                <div class="score-label">Presentation</div>
+                <div class="score-value score-blue" id="presentation-blue">6.0</div>
+            </div>
+
+            <!-- PENALTY BUTTONS BLUE -->
+            <div class="penalty-container">
+                <button class="btn-penalty btn-penalty-blue" onclick="applyPenalty('blue', -0.3)">-0.3</button>
+                <button class="btn-penalty btn-penalty-blue" onclick="applyPenalty('blue', -0.1)">-0.1</button>
+                <button class="btn-penalty btn-penalty-plus" onclick="applyPenalty('blue', +0.1)">+0.1</button>
+                <button class="btn-penalty btn-penalty-plus" onclick="applyPenalty('blue', +0.3)">+0.3</button>
+            </div>
+
+            <!-- PRESENTATION AZUL -->
+            <button class="collapse-button blue" onclick="toggleCollapse('blue-presentation', this)">Presentation</button>
+            
+            <div class="collapse-content" id="blue-presentation">
+                <div class="presentation-section presentation-blue">
+                    <!-- Fuerza y Velocidad -->
+                    <div class="criteria-group">
+                        <div class="criteria-name">💪 Fuerza y Velocidad</div>
+                        <div class="btn-score-group" id="blue-fuerza">
+                            <button class="btn-score excellent" onclick="updateScore('fuerza', 'blue', 2.0, this)">2.0</button>
+                            <button class="btn-score excellent" onclick="updateScore('fuerza', 'blue', 1.9, this)">1.9</button>
+                            <button class="btn-score excellent" onclick="updateScore('fuerza', 'blue', 1.8, this)">1.8</button>
+                            <button class="btn-score excellent" onclick="updateScore('fuerza', 'blue', 1.7, this)">1.7</button>
+                            <button class="btn-score good" onclick="updateScore('fuerza', 'blue', 1.6, this)">1.6</button>
+                            <button class="btn-score good" onclick="updateScore('fuerza', 'blue', 1.5, this)">1.5</button>
+                            <button class="btn-score good" onclick="updateScore('fuerza', 'blue', 1.4, this)">1.4</button>
+                            <button class="btn-score acceptable" onclick="updateScore('fuerza', 'blue', 1.3, this)">1.3</button>
+                            <button class="btn-score acceptable" onclick="updateScore('fuerza', 'blue', 1.2, this)">1.2</button>
+                            <button class="btn-score acceptable" onclick="updateScore('fuerza', 'blue', 1.1, this)">1.1</button>
+                            <button class="btn-score acceptable" onclick="updateScore('fuerza', 'blue', 1.0, this)">1.0</button>
+                            <button class="btn-score acceptable" onclick="updateScore('fuerza', 'blue', 0.9, this)">0.9</button>
+                            <button class="btn-score acceptable" onclick="updateScore('fuerza', 'blue', 0.8, this)">0.8</button>
+                            <button class="btn-score poor" onclick="updateScore('fuerza', 'blue', 0.7, this)">0.7</button>
+                            <button class="btn-score poor" onclick="updateScore('fuerza', 'blue', 0.6, this)">0.6</button>
+                            <button class="btn-score poor" onclick="updateScore('fuerza', 'blue', 0.5, this)">0.5</button>
+                        </div>
+                    </div>
+
+                    <!-- Tempo y Ritmo -->
+                    <div class="criteria-group">
+                        <div class="criteria-name">⏱️ Tempo y Ritmo</div>
+                        <div class="btn-score-group" id="blue-ritmo">
+                            <button class="btn-score excellent" onclick="updateScore('ritmo', 'blue', 2.0, this)">2.0</button>
+                            <button class="btn-score excellent" onclick="updateScore('ritmo', 'blue', 1.9, this)">1.9</button>
+                            <button class="btn-score excellent" onclick="updateScore('ritmo', 'blue', 1.8, this)">1.8</button>
+                            <button class="btn-score excellent" onclick="updateScore('ritmo', 'blue', 1.7, this)">1.7</button>
+                            <button class="btn-score good" onclick="updateScore('ritmo', 'blue', 1.6, this)">1.6</button>
+                            <button class="btn-score good" onclick="updateScore('ritmo', 'blue', 1.5, this)">1.5</button>
+                            <button class="btn-score good" onclick="updateScore('ritmo', 'blue', 1.4, this)">1.4</button>
+                            <button class="btn-score acceptable" onclick="updateScore('ritmo', 'blue', 1.3, this)">1.3</button>
+                            <button class="btn-score acceptable" onclick="updateScore('ritmo', 'blue', 1.2, this)">1.2</button>
+                            <button class="btn-score acceptable" onclick="updateScore('ritmo', 'blue', 1.1, this)">1.1</button>
+                            <button class="btn-score acceptable" onclick="updateScore('ritmo', 'blue', 1.0, this)">1.0</button>
+                            <button class="btn-score acceptable" onclick="updateScore('ritmo', 'blue', 0.9, this)">0.9</button>
+                            <button class="btn-score acceptable" onclick="updateScore('ritmo', 'blue', 0.8, this)">0.8</button>
+                            <button class="btn-score poor" onclick="updateScore('ritmo', 'blue', 0.7, this)">0.7</button>
+                            <button class="btn-score poor" onclick="updateScore('ritmo', 'blue', 0.6, this)">0.6</button>
+                            <button class="btn-score poor" onclick="updateScore('ritmo', 'blue', 0.5, this)">0.5</button>
+                        </div>
+                    </div>
+
+                    <!-- Expresión de Energía -->
+                    <div class="criteria-group">
+                        <div class="criteria-name">⚡ Expresión de Energía</div>
+                        <div class="btn-score-group" id="blue-energia">
+                            <button class="btn-score excellent" onclick="updateScore('energia', 'blue', 2.0, this)">2.0</button>
+                            <button class="btn-score excellent" onclick="updateScore('energia', 'blue', 1.9, this)">1.9</button>
+                            <button class="btn-score excellent" onclick="updateScore('energia', 'blue', 1.8, this)">1.8</button>
+                            <button class="btn-score excellent" onclick="updateScore('energia', 'blue', 1.7, this)">1.7</button>
+                            <button class="btn-score good" onclick="updateScore('energia', 'blue', 1.6, this)">1.6</button>
+                            <button class="btn-score good" onclick="updateScore('energia', 'blue', 1.5, this)">1.5</button>
+                            <button class="btn-score good" onclick="updateScore('energia', 'blue', 1.4, this)">1.4</button>
+                            <button class="btn-score acceptable" onclick="updateScore('energia', 'blue', 1.3, this)">1.3</button>
+                            <button class="btn-score acceptable" onclick="updateScore('energia', 'blue', 1.2, this)">1.2</button>
+                            <button class="btn-score acceptable" onclick="updateScore('energia', 'blue', 1.1, this)">1.1</button>
+                            <button class="btn-score acceptable" onclick="updateScore('energia', 'blue', 1.0, this)">1.0</button>
+                            <button class="btn-score acceptable" onclick="updateScore('energia', 'blue', 0.9, this)">0.9</button>
+                            <button class="btn-score acceptable" onclick="updateScore('energia', 'blue', 0.8, this)">0.8</button>
+                            <button class="btn-score poor" onclick="updateScore('energia', 'blue', 0.7, this)">0.7</button>
+                            <button class="btn-score poor" onclick="updateScore('energia', 'blue', 0.6, this)">0.6</button>
+                            <button class="btn-score poor" onclick="updateScore('energia', 'blue', 0.5, this)">0.5</button>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+    </div>
 
-        <!-- BOTONES DE ACCIÓN -->
-        <div style="text-align: center;">
-            <button class="btn btn-success send-button" onclick="saveScores()">
-                💾 Guardar Puntuación
-            </button>
-            <button class="btn btn-warning send-button" onclick="resetScores()" style="margin-left: 10px;">
-                🔄 Resetear Todo
-            </button>
-        </div>
+    <div class="demo-notice">
+        ℹ️ <strong>Demo Mode:</strong> Prueba la interfaz lado a lado
     </div>
 
     <script>
@@ -494,7 +577,7 @@
         // Guardar datos
         function saveScores() {
             localStorage.setItem('poomsae_scores', JSON.stringify(scores));
-            alert('✅ Puntuación guardada exitosamente en tu navegador');
+            alert('✅ Puntuación guardada');
         }
 
         // Aplicar penalizaciones
@@ -503,6 +586,7 @@
             newValue = Math.max(0, Math.min(4.0, newValue));
             scores[competitor].accuracy = Math.round(newValue * 10) / 10;
             updateDisplay();
+            saveScores();
         }
 
         // Actualizar puntuación
@@ -516,6 +600,7 @@
             button.classList.add('active');
             
             updateDisplay();
+            saveScores();
         }
 
         // Actualizar pantalla
@@ -530,35 +615,24 @@
             
             document.getElementById('presentation-red').textContent = presRed.toFixed(1);
             document.getElementById('presentation-blue').textContent = presBlue.toFixed(1);
-
-            // Total
-            const totalRed = scores.red.accuracy + presRed;
-            const totalBlue = scores.blue.accuracy + presBlue;
-            
-            document.getElementById('total-red').textContent = totalRed.toFixed(1);
-            document.getElementById('total-blue').textContent = totalBlue.toFixed(1);
         }
 
-        // Resetear todo
-        function resetScores() {
-            if (confirm('¿Estás seguro de que deseas resetear toda la puntuación?')) {
-                scores = {
-                    red: { accuracy: 4.0, fuerza: 2.0, ritmo: 2.0, energia: 2.0 },
-                    blue: { accuracy: 4.0, fuerza: 2.0, ritmo: 2.0, energia: 2.0 }
-                };
-                localStorage.removeItem('poomsae_scores');
-                updateDisplay();
-                
-                // Limpiar selecciones de botones
-                document.querySelectorAll('.btn-score.active').forEach(btn => btn.classList.remove('active'));
-                
-                alert('🔄 Puntuación reseteada');
-            }
+        // Toggle collapse
+        function toggleCollapse(elementId, button) {
+            const content = document.getElementById(elementId);
+            button.classList.toggle('collapsed');
+            content.classList.toggle('hidden');
         }
 
         // Inicializar
         loadScores();
         updateDisplay();
+
+        // Cerrar secciones por defecto
+        document.getElementById('red-presentation').classList.add('hidden');
+        document.getElementById('blue-presentation').classList.add('hidden');
+        document.querySelector('.collapse-button.red').classList.add('collapsed');
+        document.querySelector('.collapse-button.blue').classList.add('collapsed');
     </script>
 </body>
 </html>
