@@ -119,23 +119,16 @@
         /* BOTONES DE PENALIZACIÓN */
         .penalty-container {
             display: grid;
-            grid-template-columns: 1fr 2fr 1fr;
+            grid-template-columns: 1fr 1fr;
             gap: 6px;
             margin-bottom: 10px;
             margin-top: 0;
-            align-items: start;
             flex-shrink: 0;
         }
 
         .penalty-column {
             display: flex;
             flex-direction: column;
-            gap: 6px;
-        }
-
-        .penalty-column.center {
-            grid-column: 2;
-            flex-direction: row;
             gap: 6px;
         }
 
@@ -387,15 +380,15 @@
                 <div class="score-value score-red" id="presentation-red">6.0</div>
             </div>
 
-            <!-- PENALTY BUTTONS RED -->
+            <!-- PENALTY BUTTONS RED (Negativos | Positivos) -->
             <div class="penalty-container">
                 <div class="penalty-column">
                     <button class="btn-penalty btn-penalty-red" onclick="applyPenalty('red', -0.1)">-0.1</button>
                     <button class="btn-penalty btn-penalty-red" onclick="applyPenalty('red', -0.3)">-0.3</button>
                 </div>
-                <div class="penalty-column center">
-                    <button class="btn-penalty btn-penalty-plus" style="flex: 1;" onclick="applyPenalty('red', +0.1)">+0.1</button>
-                    <button class="btn-penalty btn-penalty-plus" style="flex: 1;" onclick="applyPenalty('red', +0.3)">+0.3</button>
+                <div class="penalty-column">
+                    <button class="btn-penalty btn-penalty-plus" onclick="applyPenalty('red', +0.1)">+0.1</button>
+                    <button class="btn-penalty btn-penalty-plus" onclick="applyPenalty('red', +0.3)">+0.3</button>
                 </div>
             </div>
 
@@ -491,15 +484,15 @@
                 <div class="score-value score-blue" id="presentation-blue">6.0</div>
             </div>
 
-            <!-- PENALTY BUTTONS BLUE -->
+            <!-- PENALTY BUTTONS BLUE (Positivos | Negativos) -->
             <div class="penalty-container">
+                <div class="penalty-column">
+                    <button class="btn-penalty btn-penalty-plus" onclick="applyPenalty('blue', +0.1)">+0.1</button>
+                    <button class="btn-penalty btn-penalty-plus" onclick="applyPenalty('blue', +0.3)">+0.3</button>
+                </div>
                 <div class="penalty-column">
                     <button class="btn-penalty btn-penalty-blue" onclick="applyPenalty('blue', -0.1)">-0.1</button>
                     <button class="btn-penalty btn-penalty-blue" onclick="applyPenalty('blue', -0.3)">-0.3</button>
-                </div>
-                <div class="penalty-column center">
-                    <button class="btn-penalty btn-penalty-plus" style="flex: 1;" onclick="applyPenalty('blue', +0.1)">+0.1</button>
-                    <button class="btn-penalty btn-penalty-plus" style="flex: 1;" onclick="applyPenalty('blue', +0.3)">+0.3</button>
                 </div>
             </div>
 
